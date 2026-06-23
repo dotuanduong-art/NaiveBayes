@@ -13,16 +13,14 @@ def train(dataset):
     vocab = set()
 
     for row in dataset:
-        label = row.label 
+        label = row.label
         text = row.text
 
         if label not in word_counts:
             word_counts[label] = {}
         if label not in class_counts:
             class_counts[label] = 0
-
         class_counts[label] += 1
-
         words = split_text(text)
         for word in words:
             vocab.add(word)
@@ -40,7 +38,7 @@ def predict(text, word_counts, class_counts, vocab):
     best_score = None
 
     for label in class_counts:
-        # Log xác suất tiên nghiệm P(label)
+        # Log xác suất tiên nghiệm P(label) 
         score = math.log(class_counts[label] / total_docs)
 
         # Tổng số từ trong lớp label
@@ -48,7 +46,7 @@ def predict(text, word_counts, class_counts, vocab):
 
         # Log xác suất có điều kiện P(word|label) với Laplace smoothing
         for word in words:
-            word_freq = word_counts[label].get(word, 0)
+            word_freq = word_counts[label].get(word,0)
             score += math.log((word_freq + 1) / (total_words + len(vocab)))
 
         if best_score is None or score > best_score:
@@ -100,6 +98,8 @@ def main():
     print(f"So du doan dung             : {correct}/{len(test_data)}")
     print(f"Do chinh xac (Accuracy)     : {accuracy:.2f}%")
     print("="*60)
+
+
     #Thử dự đoán tin mới
     while True:
         message= input("Nhập tin cần kiểm tra : ")
@@ -110,7 +110,6 @@ def main():
             print("Thư rác (SPAM)")
         else:
             print("Đây là thư hợp lệ (HAM)")
-
 
 if __name__ == "__main__":
     main()
